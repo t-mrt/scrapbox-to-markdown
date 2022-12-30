@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test code 1`] = `
+"
+plain\`code\`plain2
+"
+`;
+
+exports[`test code 2`] = `
+"
+\`$ commandLine\`
+"
+`;
+
+exports[`test indent 1`] = `
+"
+test
+- test
+  - test
+    - test
+- test
+  - test
+"
+`;
+
+exports[`test title 1`] = `
+"# title-name
+body1
+body2
+"
+`;
