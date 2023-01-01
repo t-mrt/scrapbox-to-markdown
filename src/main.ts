@@ -23,18 +23,42 @@ const isCodeBlock = (v: Block): v is CodeBlock => {
   return v.type === "codeBlock";
 };
 
+const nodeTypeMap = {
+  type: {
+    quote: {},
+    helpfeel: {},
+    strongImage: {},
+    strongIcon: {},
+    strong: {},
+    formula: {},
+    decoration: {},
+    code: {}, // `text`
+    commandLine: {}, // $ command
+    blank: {},
+    image: {},
+    link: {},
+    googleMap: {},
+    icon: {},
+    hashTag: {},
+    numberList: {},
+    plain: {},
+  },
+};
+
 export const main = (scrapboxAPIText: string): string => {
-  console.log(parse(scrapboxAPIText, {}));
+  //   console.log(parse(scrapboxAPIText, {}));
   return parse(scrapboxAPIText, {})
     .map((v) => {
       if (isTitle(v)) {
         return v.text && `# ${v.text}`;
       } else if (isLine(v)) {
+        let ignoreIndent = false;
         const l = v.nodes
           .map((n) => {
             switch (n.type) {
               case "quote":
-                break;
+                ignoreIndent = true;
+                return `${n.raw}`;
               case "helpfeel":
                 break;
               case "strongImage":
@@ -72,7 +96,7 @@ export const main = (scrapboxAPIText: string): string => {
             }
           })
           .join("");
-        if (v.indent === 0) {
+        if (ignoreIndent || v.indent === 0) {
           return `${l}`;
         } else {
           return `${"  ".repeat(v.indent - 1) + "- " + l}`;
@@ -92,6 +116,7 @@ export const main = (scrapboxAPIText: string): string => {
 // const PAGE_NAME = "markdownテスト";
 // const res = fetch(
 //   `https://scrapbox.io/api/pages/${PROJECT_NAME}/${PAGE_NAME}/text`
+//   // https://scrapbox.io/api/pages/yux3/markdown%E3%83%86%E3%82%B9%E3%83%88/text
 // )
 //   .then((response) => response.text())
 //   .then((text) => console.log(main(text)));

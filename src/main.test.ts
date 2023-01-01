@@ -34,4 +34,13 @@ $ commandLine
 `;
     expect(main(text)).toMatchSnapshot();
   });
+
+  it("quote", () => {
+    const text = `
+> aa
+ > aaa
+  > aaa
+`;
+    expect(main(text)).toMatchSnapshot();
+  });
 });
